@@ -5,7 +5,7 @@ on:
     paths:
       - 'backend/**' # Run workflow when backend files change
       - '.github/workflows/ci-backend.yml' # Run workflow when this pipeline changes
-    branches: [ "main", "dev" ]'
+    branches: [ "main", "dev" ]
   pull_request:
     paths:
       - 'backend/**'
