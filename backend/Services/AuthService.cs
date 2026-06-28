@@ -6,7 +6,7 @@ using Progredi.Interfaces;
 
 namespace Progredi.Services;
 
-public class AuthService(AppDbContext context) : IAuthService
+public class AuthService(AppDbContext context, ITokenService tokenService) : IAuthService
 {
     public async Task<string> RegisterAsync(RegisterUserDto dto)
     {
@@ -29,6 +29,17 @@ public class AuthService(AppDbContext context) : IAuthService
         context.Users.Add(newUser);
         await context.SaveChangesAsync();
 
-        return "User registered successfully!";
+        return tokenService.GenerateToken(newUser);
+    }
+
+    public async Task<string> LoginAsync(LoginUserDto dto)
+    {
+        var user = await context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+        if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+        {
+            throw new Exception("Invalid email or password");
+        }
+
+        return tokenService.GenerateToken(user);
     }
 }
