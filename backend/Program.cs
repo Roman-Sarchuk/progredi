@@ -3,6 +3,7 @@ using Scalar.AspNetCore;
 using Progredi.DataAccess;
 using Progredi.Interfaces;
 using Progredi.Services;
+using Progredi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -19,7 +20,13 @@ builder.Services.AddDbContext<AppDbContext>(
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+builder.Services.AddProblemDetails();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.MapOpenApi();
 app.MapScalarApiReference();
