@@ -13,13 +13,28 @@ public class AuthController(IAuthService authService) : ControllerBase
     {
         try
         {
-            var result = await authService.RegisterAsync(dto);
+            var token = await authService.RegisterAsync(dto);
             
-            return Ok(new { message = result });
+            return Ok(new { token });
         }
         catch (Exception ex)
         {
             return BadRequest(new { error = ex.Message });
+        }
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
+    {
+        try
+        {
+            var token = await authService.LoginAsync(dto);
+
+            return Ok(new { token });
+        }
+        catch (Exception ex)
+        {
+            return Unauthorized(new { error = ex.Message });
         }
     }
 }
