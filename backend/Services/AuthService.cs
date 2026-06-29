@@ -3,6 +3,7 @@ using Progredi.DataAccess;
 using Progredi.DataAccess.Entities;
 using Progredi.DTOs.Auth;
 using Progredi.Interfaces;
+using Progredi.Exceptions;
 
 namespace Progredi.Services;
 
