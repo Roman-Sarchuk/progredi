@@ -9,7 +9,7 @@ namespace Progredi.Services;
 
 public class CategoryService(AppDbContext context) : ICategoryService
 {
-    public async Task<Category> CreateAsync(Guid userId, CreateCategoryDto dto)
+    public async Task<CategoryResponseDto> CreateAsync(Guid userId, CreateCategoryDto dto)
     {
         var category = new Category
         {
@@ -21,17 +21,28 @@ public class CategoryService(AppDbContext context) : ICategoryService
         context.Categories.Add(category);
         await context.SaveChangesAsync();
         
-        return category;
+        return new CategoryResponseDto
+        {
+            Id = category.Id,
+            Name = category.Name,
+            BackgroundColorHex = category.BackgroundColorHex
+        };
     }
 
-    public async Task<IEnumerable<Category>> GetAllByUserIdAsync(Guid userId)
+    public async Task<IEnumerable<CategoryResponseDto>> GetAllByUserIdAsync(Guid userId)
     {
         return await context.Categories
             .Where(c => c.UserId == userId)
+            .Select(c => new CategoryResponseDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                BackgroundColorHex = c.BackgroundColorHex
+            })
             .ToListAsync();
     }
 
-    public async Task<Category> DeleteAsync(Guid userId, Guid categoryId)
+    public async Task<CategoryResponseDto> DeleteAsync(Guid userId, Guid categoryId)
     {
         var category = await context.Categories
             .FirstOrDefaultAsync(c => c.Id == categoryId && c.UserId == userId);
@@ -44,10 +55,15 @@ public class CategoryService(AppDbContext context) : ICategoryService
         context.Categories.Remove(category);
         await context.SaveChangesAsync();
 
-        return category;
+        return new CategoryResponseDto
+        {
+            Id = category.Id,
+            Name = category.Name,
+            BackgroundColorHex = category.BackgroundColorHex
+        };
     }
 
-    public async Task<Category> UpdateAsync(Guid userId, Guid categoryId, UpdateCategoryDto dto)
+    public async Task<CategoryResponseDto> UpdateAsync(Guid userId, Guid categoryId, UpdateCategoryDto dto)
     {
         var category = await context.Categories
             .FirstOrDefaultAsync(c => c.Id == categoryId && c.UserId == userId);
@@ -62,6 +78,11 @@ public class CategoryService(AppDbContext context) : ICategoryService
 
         await context.SaveChangesAsync();
 
-        return category;
+        return new CategoryResponseDto
+        {
+            Id = category.Id,
+            Name = category.Name,
+            BackgroundColorHex = category.BackgroundColorHex
+        };
     }
 }
