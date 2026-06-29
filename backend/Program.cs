@@ -14,8 +14,6 @@ var configuration = builder.Configuration;
 
 builder.Services.AddControllers();
 
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -30,6 +28,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(configuration["JwtSettings:Secret"]!))
         };
+
+        options.MapInboundClaims = false;
     });
 
 builder.Services.AddAuthorization();
@@ -43,6 +43,7 @@ builder.Services.AddDbContext<AppDbContext>(
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddProblemDetails();
 
