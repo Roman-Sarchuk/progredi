@@ -6,7 +6,7 @@ public class UpdateTaskItemDto
 {
     [Required(ErrorMessage = "Task title is required")]
     [MaxLength(100)]
-    public string Title { get; set; }
+    public string Title { get; set; } = null!;
 
     [MaxLength(500)]
     public string? Description { get; set; }
@@ -17,5 +17,5 @@ public class UpdateTaskItemDto
     public DateTime? DueDate { get; set; }
 
     [Required(ErrorMessage = "Task category IDs are required")]
-    public List<Guid> CategoryIds { get; set; }
+    public List<Guid> CategoryIds { get; set; } = null!;
 }

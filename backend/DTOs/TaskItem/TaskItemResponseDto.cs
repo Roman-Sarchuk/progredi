@@ -7,7 +7,7 @@ public class TaskItemResponseDto
 {
     public Guid Id { get; set; }
 
-    public string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
 
     public string? Description { get; set; }
 
@@ -19,5 +19,5 @@ public class TaskItemResponseDto
 
     public Guid TaskListId { get; set; }
 
-    public IEnumerable<CategoryResponseDto> Categories { get; set; }
+    public IEnumerable<CategoryResponseDto> Categories { get; set; } = [];
 }
