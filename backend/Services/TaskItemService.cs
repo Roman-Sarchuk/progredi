@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Progredi.DataAccess;
 using Progredi.DataAccess.Entities;
+using Progredi.DTOs.Category;
 using Progredi.DTOs.TaskItem;
 using Progredi.Interfaces;
 using Progredi.Exceptions;
